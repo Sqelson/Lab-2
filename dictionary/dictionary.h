@@ -1,28 +1,28 @@
 #pragma once
 #include <iostream>
-struct Node 
+
+struct Node
 {
-    int data; // key
+    int data = 0; // key initialized to 0
+    std::string value = ""; // value initialized to an empty string
+    Node* left = nullptr;  // pointer to the left child node initialized to nullptr
+    Node* right = nullptr;  // pointer to the right child node initialized to nullptr
 
-    std::string value; // value
+    // Default constructor
+    Node() = default;
 
-    Node* left;  // pointer to the left child node
-    Node* right;  // pointer to the right child node
-
-    // Default constructor initializing data to 0 and child pointers to nullptr
-    Node() : data(0), left(nullptr), right(nullptr) {}
+    // Constructor to initialize data and value based on passed arguments
+    Node(int key, std::string val) : data(key), value(val) {}
 };
 
 class Dictionary
 {
 private:
-    Node* head_ /*= nullptr*/;
+    Node* head_;  // pointer to root node initialized to nullptr
 
 public:
-    Dictionary() // default constructor
-    {
-        head_ = nullptr; // empty list
-    }
+    // Default constructor initializing head_ to nullptr
+    Dictionary() : head_(nullptr) {}
 
     std::string* lookup(int key) {
         Node* curr = head_;  // start at the root of the tree
@@ -47,10 +47,7 @@ public:
 
     void insert(int key, std::string value)
     {
-        // Create a new node using the default constructor and then set the data and value fields
-        Node* newNode = new Node();
-        newNode->data = key;
-        newNode->value = value;
+        Node* newNode = new Node(key, value);  // use constructor to initialize data and value
 
         if (head_ == nullptr)  // tree is empty
         {
@@ -82,14 +79,13 @@ public:
         }
 
         // key not found in tree, insert new node in correct position
-        if (key < parent->data)
+        if (key < parent->data)  // if key is less than parent, insert as left child
         {
             parent->left = newNode;  // insert new node as left child of parent
         }
-        else
+        else  // if key is greater than parent, insert as right child
         {
             parent->right = newNode;  // insert new node as right child of parent
         }
     }
 };
-
