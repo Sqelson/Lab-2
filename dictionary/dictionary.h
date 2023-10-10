@@ -6,9 +6,11 @@ struct Node
 
     std::string value; // value
 
-    Node* next; // pointer to next node in list
+    Node* left;  // pointer to the left child node
+    Node* right;  // pointer to the right child node
 
-    Node() : data(0), next(NULL) {} // default constructor
+    // Default constructor initializing data to 0 and child pointers to nullptr
+    Node() : data(0), left(nullptr), right(nullptr) {}
 };
 
 class Dictionary
@@ -23,49 +25,71 @@ public:
     }
 
     std::string* lookup(int key) {
-        Node* curr = head_; // start at head of list
+        Node* curr = head_;  // start at the root of the tree
 
-        while (curr != nullptr) // traverse list
+        while (curr != nullptr)  // traverse tree
         {
-            if (curr->data == key) // key found in list
+            if (curr->data == key)  // key found in tree
             {
-                return &curr->value; // return pointer to value
+                return &curr->value;  // return pointer to value
             }
-
-            curr = curr->next; // move to next node
+            else if (key < curr->data)  // if sought key is less, go left
+            {
+                curr = curr->left;
+            }
+            else  // if sought key is greater, go right
+            {
+                curr = curr->right;
+            }
         }
-
-        return nullptr; // key not found in list
+        return nullptr;  // key not found in tree
     }
 
-    void insert(int key, std::string value) 
+    void insert(int key, std::string value)
     {
-        Node* curr = head_; // start at head of list
+        // Create a new node using the default constructor and then set the data and value fields
+        Node* newNode = new Node();
+        newNode->data = key;
+        newNode->value = value;
 
-        while (curr != nullptr) // traverse list
+        if (head_ == nullptr)  // tree is empty
         {
-            if (curr->data == key) // key already exists in list
-            {
-                curr->value = value; // overwrite existing key with new value
-                return;
-            }
-
-            if (curr->next == nullptr) // end of list
-                break;
-
-            curr = curr->next; // move to next node
+            head_ = newNode;  // new node becomes the root of the tree
+            return;
         }
 
-        // key not found in list, create new node at end of list
-        Node* newNode = new Node();
-        newNode->data = key; // copy key into new node
-        newNode->value = value; // copy value into new node
-        newNode->next = nullptr; // new node is last node in list
+        Node* curr = head_;  // start at the root of the tree
+        Node* parent = nullptr;  // keep track of the parent node
 
-        if (curr != nullptr) // list not empty
-            curr->next = newNode; // add new node to end of list
-        else // list empty
-            head_ = newNode; // new node is first node in list
-     }
+        while (curr != nullptr)  // traverse tree
+        {
+            parent = curr;  // update parent to current node before moving to child
+
+            if (key == curr->data)  // key already exists in tree
+            {
+                curr->value = value;  // overwrite existing key with new value
+                delete newNode;  // delete the newly created node as it's not needed
+                return;
+            }
+            else if (key < curr->data)  // if key is less, go left
+            {
+                curr = curr->left;
+            }
+            else  // if key is greater, go right
+            {
+                curr = curr->right;
+            }
+        }
+
+        // key not found in tree, insert new node in correct position
+        if (key < parent->data)
+        {
+            parent->left = newNode;  // insert new node as left child of parent
+        }
+        else
+        {
+            parent->right = newNode;  // insert new node as right child of parent
+        }
+    }
 };
 
