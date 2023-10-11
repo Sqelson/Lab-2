@@ -17,14 +17,6 @@ struct Node
 
 class Dictionary
 {
-private:
-    Node* head_;  // pointer to root node initialized to nullptr
-    bool isLeaf(Node*);  // helper function to check if node is a leaf
-
-    void displayEntriesWorker(Node*);  // helper function to display entries in the tree, this is the recursive function that does the actual work.
-
-    void displayTreeWorker(Node* node, std::string indent);  // helper function to display the tree, this is the recursive function that does the actual work.
-
 public:
     // Default constructor initializing head_ to nullptr
     Dictionary() : head_(nullptr) {}
@@ -37,67 +29,56 @@ public:
     void displayTree();  // function to display the tree, this is the wrapper function that provides the public API.
 
     ItemType* lookup(KeyType key) {
-        Node* curr = head_;  // start at the root of the tree
-
-        while (curr != nullptr)  // traverse tree
-        {
-            if (curr->data == key)  // key found in tree
-            {
-                return &curr->value;  // return pointer to value
-            }
-            else if (key < curr->data)  // if sought key is less, go left
-            {
-                curr = curr->left;
-            }
-            else  // if sought key is greater, go right
-            {
-                curr = curr->right;
-            }
-        }
-        return nullptr;  // key not found in tree
+        return lookupWorker(head_, key);  // start recursion at the root of the tree
     }
 
-    void insert(KeyType key, ItemType value)
-    {
-        Node* newNode = new Node(key, value);  // use constructor to initialize data and value
+    void insert(KeyType key, ItemType value) {
+        head_ = insertWorker(head_, key, value);  // Call the recursive worker function
+    }
 
-        if (head_ == nullptr)  // tree is empty
-        {
-            head_ = newNode;  // new node becomes the root of the tree
-            return;
+private:
+    Node* head_;  // pointer to root node initialized to nullptr
+    bool isLeaf(Node*);  // helper function to check if node is a leaf
+
+    void displayEntriesWorker(Node*);  // helper function to display entries in the tree, this is the recursive function that does the actual work.
+
+    void displayTreeWorker(Node* node, std::string indent);  // helper function to display the tree, this is the recursive function that does the actual work.
+
+    ItemType* lookupWorker(Node* node, KeyType key) const {
+        if (node == nullptr) {
+            return nullptr;  // base case: key not found
+        }
+        if (key == node->data) {
+            return &node->value;  // base case: key found
+        }
+        else if (key < node->data) {
+            return lookupWorker(node->left, key);  // recursive case: go left
+        }
+        else {
+            return lookupWorker(node->right, key);  // recursive case: go right
+        }
+    }
+
+    Node* insertWorker(Node* node, KeyType key, ItemType value) {
+        if (node == nullptr) {
+            // Base case: We've found the correct position in the tree, 
+            // so create a new node and return it
+            return new Node(key, value);
         }
 
-        Node* curr = head_;  // start at the root of the tree
-        Node* parent = nullptr;  // keep track of the parent node
-
-        while (curr != nullptr)  // traverse tree
-        {
-            parent = curr;  // update parent to current node before moving to child
-
-            if (key == curr->data)  // key already exists in tree
-            {
-                curr->value = value;  // overwrite existing key with new value
-                delete newNode;  // delete the newly created node as it's not needed
-                return;
-            }
-            else if (key < curr->data)  // if key is less, go left
-            {
-                curr = curr->left;
-            }
-            else  // if key is greater, go right
-            {
-                curr = curr->right;
-            }
+        if (key == node->data) {
+            // If the key already exists, update the value
+            node->value = value; 
+        }
+        else if (key < node->data) {
+            // If the key is smaller, go to the left subtree
+            node->left = insertWorker(node->left, key, value); // recursive call, update the left child pointer
+        }
+        else {
+            // If the key is larger, go to the right subtree
+            node->right = insertWorker(node->right, key, value); // recursive call, update the right child pointer
         }
 
-        // key not found in tree, insert new node in correct position
-        if (key < parent->data)  // if key is less than parent, insert as left child
-        {
-            parent->left = newNode;  // insert new node as left child of parent
-        }
-        else  // if key is greater than parent, insert as right child
-        {
-            parent->right = newNode;  // insert new node as right child of parent
-        }
+        return node;  // Return the (possibly updated) current node
     }
 };
