@@ -24,7 +24,10 @@ public:
     // Default constructor initializing head_ to nullptr
     Dictionary() : head_(nullptr) {}
 
-    std::string* lookup(int key) {
+    using KeyType = int;
+    using ItemType = std::string;
+
+    ItemType* lookup(KeyType key) {
         Node* curr = head_;  // start at the root of the tree
 
         while (curr != nullptr)  // traverse tree
@@ -45,7 +48,7 @@ public:
         return nullptr;  // key not found in tree
     }
 
-    void insert(int key, std::string value)
+    void insert(KeyType key, ItemType value)
     {
         Node* newNode = new Node(key, value);  // use constructor to initialize data and value
 
