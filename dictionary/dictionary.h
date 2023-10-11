@@ -19,6 +19,11 @@ class Dictionary
 {
 private:
     Node* head_;  // pointer to root node initialized to nullptr
+    bool isLeaf(Node*);  // helper function to check if node is a leaf
+
+    void displayEntriesWorker(Node*);  // helper function to display entries in the tree, this is the recursive function that does the actual work.
+
+    void displayTreeWorker(Node* node, std::string indent);  // helper function to display the tree, this is the recursive function that does the actual work.
 
 public:
     // Default constructor initializing head_ to nullptr
@@ -26,6 +31,10 @@ public:
 
     using KeyType = int;
     using ItemType = std::string;
+
+    void displayEntries();  // function to display entries in the tree, this is the wrapper function that provides the public API.
+
+    void displayTree();  // function to display the tree, this is the wrapper function that provides the public API.
 
     ItemType* lookup(KeyType key) {
         Node* curr = head_;  // start at the root of the tree
