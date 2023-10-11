@@ -5,22 +5,22 @@ int main()
 {
 	Dictionary dict;
 
-	dict.insert(22, "Jane");
-	dict.insert(22, "Mary");
-	dict.insert(0, "Harold");
-	dict.insert(9, "Edward");
-	dict.insert(37, "Victoria");
-	dict.insert(4, "Matilda");
-	dict.insert(26, "Oliver");
-	dict.insert(42, "Elizabeth");
-	dict.insert(19, "Henry");
-	dict.insert(4, "Stephen");
-	dict.insert(24, "James");
-	dict.insert(-1, "Edward");
-	dict.insert(31, "Anne");
-	dict.insert(23, "Elizabeth");
-	dict.insert(1, "William");
-	dict.insert(26, "Charles");
+	dict.insertNode(22, "Jane");
+	dict.insertNode(22, "Mary");
+	dict.insertNode(0, "Harold");
+	dict.insertNode(9, "Edward");
+	dict.insertNode(37, "Victoria");
+	dict.insertNode(4, "Matilda");
+	dict.insertNode(26, "Oliver");
+	dict.insertNode(42, "Elizabeth");
+	dict.insertNode(19, "Henry");
+	dict.insertNode(4, "Stephen");
+	dict.insertNode(24, "James");
+	dict.insertNode(-1, "Edward");
+	dict.insertNode(31, "Anne");
+	dict.insertNode(23, "Elizabeth");
+	dict.insertNode(1, "William");
+	dict.insertNode(26, "Charles");
 
 	dict.displayEntries();
 	dict.displayTree();
