@@ -82,7 +82,8 @@ private:
         }
     }
 
-    Node* insertNodeWorker(Node* node, KeyType key, ItemType value) {
+    // Recursive worker function to insert a node with the specified key and value, also using a reference parameter now (&)!
+    Node* insertNodeWorker(Node*& node, KeyType key, ItemType value) {
         if (node == nullptr) {
             // Base case: We've found the correct position in the tree, 
             // so create a new node and return it

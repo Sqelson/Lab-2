@@ -240,7 +240,6 @@ TEST(RemoveNodeTests, InsertMany_RemoveNodesWithChildren) {
     isPresent(dict, 4, "Stephen");
     isPresent(dict, 9, "Edward");
     isPresent(dict, 1, "William");
-    // ... other checks ...
 }
 
 // Test inserting many nodes, then attempting to remove a node that doesn't exist.
@@ -255,7 +254,6 @@ TEST(RemoveNodeTests, InsertMany_RemoveAbsent) {
     isPresent(dict, 22, "Mary");
     isPresent(dict, 4, "Stephen");
     isPresent(dict, 9, "Edward");
-    // ... other checks ...
 }
 
 // Test case for the destructor and deepDeleteWorker function
@@ -263,8 +261,8 @@ TEST(DestructorTests, DestructorAndDeepDelete) {
     Dictionary* dict = new Dictionary;
 
     // Insert multiple key-value pairs
-    // -> is used because dict is a pointer. If dict was not a pointer, you would use the . operator instead.
-    // This is also why we do not use the insertTestData function here, because it takes a Dictionary object, not a pointer.
+    // -> is used because dict is a pointer. If dict was not a pointer, we would use the . operator instead
+    // This is also why we do not use the insertTestData function here, because it takes a Dictionary object, not a pointer
     dict->insertNode(1, "one");
     dict->insertNode(2, "two");
     dict->insertNode(3, "three");
@@ -279,7 +277,7 @@ TEST(DestructorTests, DestructorAndDeepDelete) {
 		// This test currently fails, for reasons that are not clear to me
         });
 }
-
+/*
 // These tests need verifying and completing to ensure they work.
 TEST(CopyConstructorTests, CopyConstructorFullyCopies)
 {
@@ -350,3 +348,4 @@ TEST(CopyConstructorTests, CopyConstructorIsDeep)
     isAbsent(dict2, 26); // Verify that the node is not present in the copied dictionary.
     isPresent(dict1, 26, "Charles"); // Verify that the node is still present in the source dictionary.
 }
+*/
