@@ -1,8 +1,8 @@
 #include "pch.h"
 
 #include <chrono>
-#include <gtest/gtest.h>
 #include "../dictionary/dictionary.h"
+#include <gtest/gtest.h>
 
 // Define a helper function to check if a key is present in the dictionary. The test output is displayed here.
 void isPresent(Dictionary& dict, int k, std::string i) {
@@ -43,7 +43,7 @@ void insertTestData(Dictionary& dict) {
 // Initial test cases that do not use the dictionary from the labs.
 
 // Test case for inserting and looking up values in the Dictionary.
-TEST(DictionaryTest, InsertAndLookup) {
+TEST(InsertAndLookupTests, InsertAndLookup) {
     Dictionary dict;  // Create a Dictionary object
 
     // Test inserting a new key-value pair
@@ -65,7 +65,7 @@ TEST(DictionaryTest, InsertAndLookup) {
 }
 
 // Test case for overwriting values of existing keys in the Dictionary.
-TEST(DictionaryTest, OverwriteExistingKey) {
+TEST(InsertAndLookupTests, OverwriteExistingKey) {
     Dictionary dict;
 
     // Insert a key-value pair and check its value
@@ -82,7 +82,7 @@ TEST(DictionaryTest, OverwriteExistingKey) {
 }
 
 // Test case for looking up keys that do not exist in the Dictionary.
-TEST(DictionaryTest, LookupNonexistentKey) {
+TEST(InsertAndLookupTests, LookupNonexistentKey) {
     Dictionary dict;
 
     // Attempt to look up a key that hasn't been inserted, expecting a null pointer
@@ -91,7 +91,7 @@ TEST(DictionaryTest, LookupNonexistentKey) {
 }
 
 // Test case for inserting multiple key-value pairs and looking them up in the Dictionary.
-TEST(DictionaryTest, InsertMultipleAndLookup) {
+TEST(InsertAndLookupTests, InsertMultipleAndLookup) {
     Dictionary dict;
 
     // Insert multiple key-value pairs
@@ -114,7 +114,7 @@ TEST(DictionaryTest, InsertMultipleAndLookup) {
 }
 
 // Test case for inserting and looking up values when the Dictionary is initially empty.
-TEST(DictionaryTest, InsertAndLookupWhenEmpty) {
+TEST(InsertAndLookupTests, InsertAndLookupWhenEmpty) {
     Dictionary dict;
 
     // Insert a key-value pair and check its value
@@ -125,7 +125,7 @@ TEST(DictionaryTest, InsertAndLookupWhenEmpty) {
 }
 
 // Test case for inserting and looking up a large number of key-value pairs.
-TEST(DictionaryTest, InsertAndLookupLargeNumber) {
+TEST(InsertAndLookupTests, InsertAndLookupLargeNumber) {
     Dictionary dict;
 
     // Insert a large number of key-value pairs
@@ -142,7 +142,7 @@ TEST(DictionaryTest, InsertAndLookupLargeNumber) {
 }
 
 // Test case for measuring the performance of insertion and lookup operations.
-TEST(DictionaryTest, PerformanceTest) {
+TEST(PerformanceTests, PerformanceTest) {
     Dictionary dict;
 
     // Measure the time taken to insert a large number of key-value pairs
@@ -167,7 +167,7 @@ TEST(DictionaryTest, PerformanceTest) {
 // Additional tests using the dictionary from the labs.
 
 // Test removing the root node when it only has a left child.
-TEST(DictionaryTest, RemoveRootWithLeftChild) {
+TEST(RemoveNodeTests, RemoveRootWithLeftChild) {
     Dictionary dict;  // Create a new Dictionary instance.
     dict.insertNode(31, "Anne");  // Insert a root node.
     dict.insertNode(7, "John");  // Insert a left child.
@@ -178,7 +178,7 @@ TEST(DictionaryTest, RemoveRootWithLeftChild) {
 }
 
 // Test removing the root node when it only has a right child.
-TEST(DictionaryTest, RemoveRootWithRightChild) {
+TEST(RemoveNodeTests, RemoveRootWithRightChild) {
     Dictionary dict;  // Create a new Dictionary instance.
     dict.insertNode(7, "John");  // Insert a root node.
     dict.insertNode(31, "Anne");  // Insert a right child.
@@ -189,7 +189,7 @@ TEST(DictionaryTest, RemoveRootWithRightChild) {
 }
 
 // Test inserting many nodes, then removing nodes that only have one child.
-TEST(DictionaryTest, InsertMany_RemoveNodesWithOneChild) {
+TEST(RemoveNodeTests, InsertMany_RemoveNodesWithOneChild) {
     Dictionary dict;  // Create a new Dictionary instance.
     insertTestData(dict);  // Insert test data.
 
@@ -210,7 +210,7 @@ TEST(DictionaryTest, InsertMany_RemoveNodesWithOneChild) {
 }
 
 // Test removing the root node when it has both left and right children.
-TEST(DictionaryTest, RemoveRootWithChildren) {
+TEST(RemoveNodeTests, RemoveRootWithChildren) {
     Dictionary dict;  // Create a new Dictionary instance.
     dict.insertNode(31, "Anne");  // Insert a root node.
     dict.insertNode(7, "John");  // Insert a left child.
@@ -223,7 +223,7 @@ TEST(DictionaryTest, RemoveRootWithChildren) {
 }
 
 // Test inserting many nodes, then removing nodes that have two children.
-TEST(DictionaryTest, InsertMany_RemoveNodesWithChildren) {
+TEST(RemoveNodeTests, InsertMany_RemoveNodesWithChildren) {
     Dictionary dict;  // Create a new Dictionary instance.
     insertTestData(dict);  // Insert test data.
 
@@ -244,7 +244,7 @@ TEST(DictionaryTest, InsertMany_RemoveNodesWithChildren) {
 }
 
 // Test inserting many nodes, then attempting to remove a node that doesn't exist.
-TEST(DictionaryTest, InsertMany_RemoveAbsent) {
+TEST(RemoveNodeTests, InsertMany_RemoveAbsent) {
     Dictionary dict;  // Create a new Dictionary instance.
     insertTestData(dict);  // Insert test data.
 
@@ -259,7 +259,7 @@ TEST(DictionaryTest, InsertMany_RemoveAbsent) {
 }
 
 // Test case for the destructor and deepDeleteWorker function
-TEST(DictionaryTest, DestructorAndDeepDelete) {
+TEST(DestructorTests, DestructorAndDeepDelete) {
     Dictionary* dict = new Dictionary;
 
     // Insert multiple key-value pairs
@@ -278,4 +278,75 @@ TEST(DictionaryTest, DestructorAndDeepDelete) {
         dict->insertNode(10, "ten");
 		// This test currently fails, for reasons that are not clear to me
         });
+}
+
+// These tests need verifying and completing to ensure they work.
+TEST(CopyConstructorTests, CopyConstructorFullyCopies)
+{
+    Dictionary dict1; // Create a new Dictionary instance.
+    insertTestData(dict1); // Insert test data.
+
+    Dictionary dict2(dict1); // Create a new Dictionary instance using the copy constructor.
+
+    // Verify that the copy constructor has fully copied the dictionary.
+    isPresent(dict2, 22, "Mary");
+    isPresent(dict2, 4, "Stephen");
+    isPresent(dict2, 9, "Edward");
+    isPresent(dict2, 1, "William");
+    isPresent(dict2, 0, "Harold");
+    isPresent(dict2, 24, "James");
+    isPresent(dict2, 26, "Charles");
+    isPresent(dict2, 19, "Henry");
+	isPresent(dict2, 31, "Anne");
+    isPresent(dict2, 23, "Elizabeth");
+    isPresent(dict2, 37, "Victoria");
+    isPresent(dict2, 42, "Elizabeth");
+    isPresent(dict2, -1, "Edward");
+}
+
+TEST(CopyConstructorTests, CopyConstructorDoesNotDeleteSource)
+{
+    Dictionary dict1; // Create a new Dictionary instance.
+    insertTestData(dict1); // Insert test data.
+
+    Dictionary dict2(dict1); // Create a new Dictionary instance using the copy constructor.
+
+    // Verify that the copy constructor has not deleted the source dictionary.
+    isPresent(dict1, 22, "Mary");
+	isPresent(dict1, 4, "Stephen");
+    isPresent(dict1, 9, "Edward");
+    isPresent(dict1, 1, "William");
+    isPresent(dict1, 0, "Harold");
+    isPresent(dict1, 24, "James");
+    isPresent(dict1, 26, "Charles");
+    isPresent(dict1, 19, "Henry");
+    isPresent(dict1, 31, "Anne");
+    isPresent(dict1, 23, "Elizabeth");
+    isPresent(dict1, 37, "Victoria");
+    isPresent(dict1, 42, "Elizabeth");
+    isPresent(dict1, -1, "Edward");
+}
+
+TEST(CopyConstructorTests, CopyConstructorIsDeep)
+{
+    Dictionary dict1; // Create a new Dictionary instance.
+    insertTestData(dict1); // Insert test data.
+
+    Dictionary dict2(dict1); // Create a new Dictionary instance using the copy constructor.
+
+    dict1.insertNode(2, "William"); // Insert a new node into the source dictionary.
+    isPresent(dict1, 2, "William"); // Verify that the new node is present in the source dictionary.
+    isAbsent(dict2, 2); // Verify that the new node is not present in the copied dictionary.
+
+    dict2.insertNode(3, "Henry"); // Insert a new node into the copied dictionary.
+	isPresent(dict2, 3, "Henry"); // Verify that the new node is present in the copied dictionary.
+    isAbsent(dict1, 3); // Verify that the new node is not present in the source dictionary.
+
+    dict1.removeNode(24); // Remove a node from the source dictionary.
+    isAbsent(dict1, 24); // Verify that the node is not present in the source dictionary.
+    isPresent(dict2, 24, "James"); // Verify that the node is still present in the copied dictionary.
+
+    dict2.removeNode(26); // Remove a node from the copied dictionary.
+    isAbsent(dict2, 26); // Verify that the node is not present in the copied dictionary.
+    isPresent(dict1, 26, "Charles"); // Verify that the node is still present in the source dictionary.
 }

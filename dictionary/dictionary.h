@@ -56,6 +56,9 @@ public:
         deepDeleteWorker(head_);
     }
 
+    // Copy constructor that performs a deep copy of the tree
+    Dictionary(const Dictionary& other);
+
 private:
     Node* head_;  // pointer to root node initialized to nullptr
     bool isLeaf(Node*);  // helper function to check if node is a leaf
@@ -122,7 +125,7 @@ private:
             // Case 1: Node with only one child or no children
             if (node->left == nullptr || node->right == nullptr) {
                 Node* tempNode = (node->left != nullptr) ? node->left : node->right;  // Get the non-null child (if any)
-                delete node;  // Delete the current node
+                delete node;  // Delete the current node, this is VERY IMPORTANT to prevent memory leaks
                 node = tempNode;  // Assign the non-null child to the current node's position
             }
             // Case 2: Node with two children
@@ -167,4 +170,6 @@ private:
 
         delete node;  // Delete the current node
     }
+
+    Node* deepCopyWorker(const Node* node);
 };
