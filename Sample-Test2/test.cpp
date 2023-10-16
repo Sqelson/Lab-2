@@ -257,3 +257,25 @@ TEST(DictionaryTest, InsertMany_RemoveAbsent) {
     isPresent(dict, 9, "Edward");
     // ... other checks ...
 }
+
+// Test case for the destructor and deepDeleteWorker function
+TEST(DictionaryTest, DestructorAndDeepDelete) {
+    Dictionary* dict = new Dictionary;
+
+    // Insert multiple key-value pairs
+    // -> is used because dict is a pointer. If dict was not a pointer, you would use the . operator instead.
+    // This is also why we do not use the insertTestData function here, because it takes a Dictionary object, not a pointer.
+    dict->insertNode(1, "one");
+    dict->insertNode(2, "two");
+    dict->insertNode(3, "three");
+
+    // Call the destructor by deleting the Dictionary object
+    delete dict;
+
+    // After deleting the Dictionary object, attempt to access it (which should crash if memory is not properly de-allocated)
+    // If the program reaches this point without crashing, it suggests that the memory was successfully de-allocated
+    EXPECT_ANY_THROW({
+        dict->insertNode(10, "ten");
+		// This test currently fails, for reasons that are not clear to me
+        });
+}

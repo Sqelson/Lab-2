@@ -22,7 +22,9 @@ int main()
 	dict.insertNode(1, "William");
 	dict.insertNode(26, "Charles");
 
+	std::cout << ("Here are the entries in the tree.") << std::endl;
 	dict.displayEntries();
+	std::cout << ("Here is the tree.") << std::endl;
 	dict.displayTree();
 }
 

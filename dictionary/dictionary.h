@@ -50,6 +50,11 @@ public:
         return keys;
     }
 
+    // Destructor to delete all nodes in the tree
+    ~Dictionary() {
+        // Call the recursive function to delete all nodes
+        deepDeleteWorker(head_);
+    }
 
 private:
     Node* head_;  // pointer to root node initialized to nullptr
@@ -149,5 +154,17 @@ private:
             keys.push_back(node->data);
             inOrderTraversalWorker(node->right, keys);
         }
+    }
+
+    // Recursive helper function to delete all nodes in the tree
+    void deepDeleteWorker(Node* node) {
+        if (node == nullptr) {
+            return;  // Base case: the tree (subtree) is empty, nothing to delete
+        }
+
+        deepDeleteWorker(node->left);   // Recursively delete the left subtree
+        deepDeleteWorker(node->right);  // Recursively delete the right subtree
+
+        delete node;  // Delete the current node
     }
 };
