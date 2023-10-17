@@ -257,6 +257,7 @@ TEST(RemoveNodeTests, InsertMany_RemoveAbsent) {
 }
 
 // Test case for the destructor and deepDeleteWorker function
+// This test currently fails, for reasons that are not clear to me 
 TEST(DestructorTests, DestructorAndDeepDelete) {
     Dictionary* dict = new Dictionary;
 
@@ -274,7 +275,6 @@ TEST(DestructorTests, DestructorAndDeepDelete) {
     // If the program reaches this point without crashing, it suggests that the memory was successfully de-allocated
     EXPECT_ANY_THROW({
         dict->insertNode(10, "ten");
-		// This test currently fails, for reasons that are not clear to me
         });
 }
 /*
