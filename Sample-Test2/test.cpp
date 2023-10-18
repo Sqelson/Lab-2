@@ -2,7 +2,8 @@
 
 #include <chrono>
 #include "../dictionary/dictionary.h"
-#include <gtest/gtest.h>
+#include "../dictionary/node.h"
+#include "gtest/gtest.h"
 
 // Define a helper function to check if a key is present in the dictionary. The test output is displayed here.
 void isPresent(Dictionary& dict, int k, std::string i) {
@@ -277,7 +278,7 @@ TEST(DestructorTests, DestructorAndDeepDelete) {
         dict->insertNode(10, "ten");
         });
 }
-/*
+
 // These tests need verifying and completing to ensure they work.
 TEST(CopyConstructorTests, CopyConstructorFullyCopies)
 {
@@ -348,4 +349,3 @@ TEST(CopyConstructorTests, CopyConstructorIsDeep)
     isAbsent(dict2, 26); // Verify that the node is not present in the copied dictionary.
     isPresent(dict1, 26, "Charles"); // Verify that the node is still present in the source dictionary.
 }
-*/

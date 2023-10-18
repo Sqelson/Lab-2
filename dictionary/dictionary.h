@@ -1,26 +1,24 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "Node.h"
 
-struct Node
-{
-    int data = 0; // key initialized to 0
-    std::string value = ""; // value initialized to an empty string
-    Node* left = nullptr;  // pointer to the left child node initialized to nullptr
-    Node* right = nullptr;  // pointer to the right child node initialized to nullptr
-
-    // Default constructor
-    Node() = default;
-
-    // Constructor to initialize data and value based on passed arguments
-    Node(int key, std::string val) : data(key), value(val) {}
-};
+struct Node;
 
 class Dictionary
 {
 public:
     // Default constructor initializing head_ to nullptr
     Dictionary() : head_(nullptr) {}
+
+    // Destructor to delete all nodes in the tree
+    ~Dictionary() {
+        // Call the recursive function to delete all nodes
+        deepDeleteWorker(head_);
+    }
+
+    // Copy constructor that performs a deep copy of the tree
+    Dictionary(const Dictionary& other);
 
     using KeyType = int;
     using ItemType = std::string;
@@ -49,15 +47,6 @@ public:
         inOrderTraversalWorker(head_, keys);
         return keys;
     }
-
-    // Destructor to delete all nodes in the tree
-    ~Dictionary() {
-        // Call the recursive function to delete all nodes
-        deepDeleteWorker(head_);
-    }
-
-    // Copy constructor that performs a deep copy of the tree
-    Dictionary(const Dictionary& other);
 
 private:
     Node* head_;  // pointer to root node initialized to nullptr
