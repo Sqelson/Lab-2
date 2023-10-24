@@ -56,8 +56,8 @@ private:
 
     void displayTreeWorker(Node* node, std::string indent);  // helper function to display the tree, this is the recursive function that does the actual work.
 
-    ItemType* lookupNodeWorker(Node* node, KeyType key) const {
-        if (node == nullptr) {
+    ItemType* lookupNodeWorker(Node* node, KeyType key) {
+        if (isLeaf(node)) {
             return nullptr;  // base case: key not found
         }
         if (key == node->data) {
@@ -73,7 +73,7 @@ private:
 
     // Recursive worker function to insert a node with the specified key and value, also using a reference parameter now (&)!
     Node* insertNodeWorker(Node*& node, KeyType key, ItemType value) {
-        if (node == nullptr) {
+        if (isLeaf(node)) {
             // Base case: We've found the correct position in the tree, 
             // so create a new node and return it
             return new Node(key, value);
@@ -107,7 +107,7 @@ private:
 
     // Recursive worker function to find and remove a node with the specified key
     void removeNodeWorker(Node*& node, KeyType key) {
-        if (node == nullptr) {
+        if (isLeaf(node)) {
             return;  // Key not found, do nothing
         }
 
@@ -141,8 +141,8 @@ private:
         }
     }
 
-    void inOrderTraversalWorker(Node* node, std::vector<int>& keys) const {
-        if (node != nullptr) {
+    void inOrderTraversalWorker(Node* node, std::vector<int>& keys)  {
+        if (!isLeaf(node)) {
             inOrderTraversalWorker(node->left, keys);
             keys.push_back(node->data);
             inOrderTraversalWorker(node->right, keys);
@@ -151,7 +151,7 @@ private:
 
     // Recursive helper function to delete all nodes in the tree.
     void deepDeleteWorker(Node* node) {
-        if (node == nullptr) {
+        if (isLeaf(node)) {
             return;  // Base case: the tree (subtree) is empty, nothing to delete.
         }
 
@@ -161,5 +161,5 @@ private:
         delete node;  // Delete the current node.
     }
 
-    Node* deepCopyWorker(const Node* node);
+    Node* deepCopyWorker(Node* node);
 };

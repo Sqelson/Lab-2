@@ -13,7 +13,7 @@ void Dictionary::displayEntries()
 
 void Dictionary::displayEntriesWorker(Node* currentNode)
 {
-	if (currentNode == nullptr) return; // (1) base case: if the current node is null, return
+	if (isLeaf(currentNode)) return; // (1) base case: if the current node is null, return
 
 	std::cout << "Key = " << currentNode->data << ", Value = " << currentNode->value << std::endl; // (A) code for processing a node during a pre-order traversal goes here
 	displayEntriesWorker(currentNode->left);  // (2) recursively call the worker function on the left child pointer here
@@ -27,7 +27,7 @@ void Dictionary::displayTree() {
 }
 
 void Dictionary::displayTreeWorker(Node* node, std::string indent) {
-	if (node == nullptr) // Base case: if the current node is null, display a leaf node and return.
+	if (isLeaf(node)) // Base case: if the current node is null, display a leaf node and return.
 	{
 		std::cout << indent << "*" << std::endl;
 		return;
@@ -49,8 +49,8 @@ Dictionary::Dictionary(const Dictionary& other) {
 }
 
 // Recursive worker function to perform deep copy.
-Node* Dictionary::deepCopyWorker(const Node* node) {
-	if (node == nullptr) {
+Node* Dictionary::deepCopyWorker(Node* node) {
+	if (isLeaf(node)) {
 		return nullptr;  // Base case: If the original tree is empty, return nullptr.
 	}
 
