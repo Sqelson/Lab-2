@@ -37,27 +37,27 @@ void Dictionary::displayTreeWorker(Node* node, std::string indent) {
 	displayTreeWorker(node->left, indent);  // Recursive call for the left child with increased indentation.
 	// (B) code for processing a node during an in-order traversal would go here (cut and paste the code from (A) above)
 	displayTreeWorker(node->right, indent);  // Recursive call for the right child with increased indentation.
-	// (C) code for processing a node during a post-order traversal goes here (cut and paste the code from (A) above)
+	// (C) code for processing a node during a post-order traversal goes here (cut and paste the code from (A) above).
 }
 
-// Define the copy constructor
+// Define the copy constructor.
 Dictionary::Dictionary(const Dictionary& other) {
-	// Initialize head_ to nullptr in the new object
+	// Initialize head_ to nullptr in the new object.
 	head_ = nullptr;
-	// Perform a deep copy of the tree from 'other' using the recursive worker function
+	// Perform a deep copy of the tree from 'other' using the recursive worker function.
 	head_ = deepCopyWorker(other.head_);
 }
 
-// Recursive worker function to perform deep copy
+// Recursive worker function to perform deep copy.
 Node* Dictionary::deepCopyWorker(const Node* node) {
 	if (node == nullptr) {
-		return nullptr;  // Base case: If the original tree is empty, return nullptr
+		return nullptr;  // Base case: If the original tree is empty, return nullptr.
 	}
 
-	// Create a new node with the same data and value as the original node
+	// Create a new node with the same data and value as the original node.
 	Node* newNode = new Node(node->data, node->value);
 
-	// Recursively copy the left and right subtrees
+	// Recursively copy the left and right subtrees.
 	newNode->left = deepCopyWorker(node->left);
 	newNode->right = deepCopyWorker(node->right);
 

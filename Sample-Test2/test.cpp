@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include <chrono>
 #include "../dictionary/dictionary.h"
 #include "../dictionary/node.h"
@@ -272,11 +270,10 @@ TEST(DestructorTests, DestructorAndDeepDelete) {
     // Call the destructor by deleting the Dictionary object
     delete dict;
 
-    // After deleting the Dictionary object, attempt to access it (which should crash if memory is not properly de-allocated)
-    // If the program reaches this point without crashing, it suggests that the memory was successfully de-allocated
-    EXPECT_ANY_THROW({
+    // There is not a way to actually test this aside from checking that the destructor itself does not throw an exception.
+    /* EXPECT_ANY_THROW({
         dict->insertNode(10, "ten");
-        });
+        }); */
 }
 
 // These tests need verifying and completing to ensure they work.
