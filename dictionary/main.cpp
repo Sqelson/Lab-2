@@ -26,4 +26,6 @@ int main()
 	dict.displayEntries();
 	std::cout << ("Here is the tree.") << std::endl;
 	dict.displayTree();
+
+
 }
