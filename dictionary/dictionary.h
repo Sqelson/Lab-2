@@ -200,4 +200,8 @@ private:
 	}
 
 	Node* deepCopyWorker(Node* node); // Recursive helper function to perform a deep copy of the tree.
+
+	// Rotation functions
+	Node* rotateLeft(Node* node);
+	Node* rotateRight(Node* node);
 };

@@ -73,3 +73,28 @@ Node* Dictionary::deepCopyWorker(Node* node)
 	return newNode;
 }
 
+// Rotate left around the given node
+Node* Dictionary::rotateLeft(Node* node) {
+	if (node == nullptr || node->right == nullptr) {
+		return node; // Can't rotate
+	}
+
+	Node* newRoot = node->right; // New root will be the right child
+	node->right = newRoot->left; // Update right child of old root
+	newRoot->left = node; // Update left child of new root
+
+	return newRoot; // Return new root
+}
+
+// Rotate right around the given node
+Node* Dictionary::rotateRight(Node* node) {
+	if (node == nullptr || node->left == nullptr) {
+		return node; // Can't rotate
+	}
+
+	Node* newRoot = node->left; // New root will be the left child
+	node->left = newRoot->right; // Update left child of old root
+	newRoot->right = node; // Update right child of new root
+
+	return newRoot; // Return new root
+}
