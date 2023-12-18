@@ -3,6 +3,7 @@
 
 int main()
 {
+	// The following displays the entries in the tree, and the tree itself. Useful for visualizing the tree and testing purposes.
 	Dictionary dict;
 
 	dict.insertNode(22, "Jane");
@@ -27,5 +28,18 @@ int main()
 	std::cout << ("Here is the tree.") << std::endl;
 	dict.displayTree();
 
+	// The following is for rotation testing, only uncomment one at a time.
+
+	Dictionary::KeyType key = 22;
+	dict.rotateLeft(key);
+
+	std::cout << ("Here is the tree, post-rotate left.") << std::endl;
+	dict.displayTree();
+
+	// Dictionary::KeyType key = 22;
+	// dict.rotateRight(key);
+
+	// std::cout << ("Here is the tree, post-rotate right.") << std::endl;
+	// dict.displayTree();
 
 }

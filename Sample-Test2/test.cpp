@@ -345,3 +345,41 @@ TEST(CopyConstructorTests, CopyConstructorIsDeep)
     isAbsent(dict2, 26); // Verify that the node is not present in the copied dictionary.
     isPresent(dict1, 26, "Charles"); // Verify that the node is still present in the source dictionary.
 }
+
+// Test for rotateLeft.
+TEST(RotationTests, RotateLeft) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    Dictionary::KeyType key = 22;
+    dict.rotateLeft(key);
+
+    // Verify the structure after rotation.
+    Node* root = dict.getRoot();
+    Node* leftChild = dict.getLeftChild(root->data);
+    Node* rightChild = dict.getRightChild(root->data);
+
+    // Check if the root and its children are as expected after rotation.
+	EXPECT_EQ(root->data, 37);
+    EXPECT_EQ(leftChild ? leftChild->data : -1, 22);
+    EXPECT_EQ(rightChild ? rightChild->data : -1, 42);
+}
+
+// Test for rotateRight.
+TEST(RotationTests, RotateRight) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    Dictionary::KeyType key = 22;
+    dict.rotateRight(key);
+
+    // Verify the structure after rotation.
+    Node* root = dict.getRoot();
+    Node* leftChild = dict.getLeftChild(root->data);
+    Node* rightChild = dict.getRightChild(root->data);
+
+    // Check if the root and its children are as expected after rotation.
+    EXPECT_EQ(root->data, 0);
+    EXPECT_EQ(leftChild ? leftChild->data : -1, -1);
+    EXPECT_EQ(rightChild ? rightChild->data : -1, 22);
+}
