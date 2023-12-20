@@ -455,3 +455,207 @@ TEST(MoveConstructorTests, MoveConstructorSteals) {
 
     delete dictPtr; // Clean up dynamically allocated memory.
 }
+
+// Test case for fully copying a dictionary.
+TEST(CopyAssignmentTests, CopyAssignmentFullyCopies) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2 = dict1; // Copy assignment.
+
+    // Check if all elements are present in dict2
+    isPresent(dict2, 22, "Mary");
+    isPresent(dict2, 4, "Stephen");
+    isPresent(dict2, 9, "Edward");
+    isPresent(dict2, 1, "William");
+    isPresent(dict2, 0, "Harold");
+    isPresent(dict2, 24, "James");
+    isPresent(dict2, 26, "Charles");
+    isPresent(dict2, 19, "Henry");
+    isPresent(dict2, 31, "Anne");
+    isPresent(dict2, 23, "Elizabeth");
+    isPresent(dict2, 37, "Victoria");
+    isPresent(dict2, 42, "Elizabeth");
+    isPresent(dict2, -1, "Edward");
+}
+
+// Test case for checking if the copy assignment overwrites existing data.
+TEST(CopyAssignmentTests, CopyAssignmentOverwrites) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2.insertNode(22, "Jane");
+    dict2.insertNode(2, "William");
+
+    dict1 = dict2; // Copy assignment.
+
+    // Check if dict1 only contains elements from dict2
+    isAbsent(dict1, 4);
+    isAbsent(dict1, 9);
+    isAbsent(dict1, 1);
+    isAbsent(dict1, 0);
+    isAbsent(dict1, 24);
+    isAbsent(dict1, 26);
+    isAbsent(dict1, 19);
+    isAbsent(dict1, 31);
+    isAbsent(dict1, 23);
+    isAbsent(dict1, 37);
+    isAbsent(dict1, 42);
+    isAbsent(dict1, -1);
+    
+    isPresent(dict1, 2, "William");
+    isPresent(dict1, 22, "Jane");
+}
+
+// Test case for checking that copy assignment does not reverse copy.
+TEST(CopyAssignmentTests, CopyAssignmentDoesNotReverseCopy) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2.insertNode(22, "Jane");
+    dict2.insertNode(2, "William");
+
+    dict2 = dict1; // Copy assignment.
+
+    // Check if dict1 does not contain elements only in dict2.
+    isAbsent(dict1, 2);
+}
+
+// Test case for checking deep copy in copy assignment.
+TEST(CopyAssignmentTests, CopyAssignmentIsDeep) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2 = dict1; // Copy assignment.
+
+    dict1.insertNode(2, "William");
+    isPresent(dict1, 2, "William");
+    isAbsent(dict2, 2);
+
+    dict2.insertNode(3, "Henry");
+    isPresent(dict2, 3, "Henry");
+    isAbsent(dict1, 3);
+
+    dict1.removeNode(24);
+    isAbsent(dict1, 24);
+    isPresent(dict2, 24, "James");
+
+    dict2.removeNode(26);
+    isAbsent(dict2, 26);
+    isPresent(dict1, 26, "Charles");
+}
+
+// Test case for checking self-assignment.
+TEST(CopyAssignmentTests, CopySelfAssignment) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict = dict; // Self-assignment.
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isAbsent(dict, 2);
+}
+
+// Test case for fully moving a dictionary
+TEST(MoveAssignmentTests, MoveAssignmentFullyMoves) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2 = std::move(dict1); // Move assignment.
+
+    // Check if all elements are present in dict2
+    isPresent(dict2, 22, "Mary");
+    isPresent(dict2, 4, "Stephen");
+    isPresent(dict2, 9, "Edward");
+    isPresent(dict2, 1, "William");
+    isPresent(dict2, 0, "Harold");
+    isPresent(dict2, 24, "James");
+    isPresent(dict2, 26, "Charles");
+    isPresent(dict2, 19, "Henry");
+    isPresent(dict2, 31, "Anne");
+    isPresent(dict2, 23, "Elizabeth");
+    isPresent(dict2, 37, "Victoria");
+    isPresent(dict2, 42, "Elizabeth");
+    isPresent(dict2, -1, "Edward");
+}
+
+// Test case for checking if the move assignment steals resources
+TEST(MoveAssignmentTests, MoveAssignmentSteals) {
+    Dictionary dict1, dict2;
+    insertTestData(dict1);
+
+    dict2 = std::move(dict1); // Move assignment.
+
+    // Check if dict1 is empty after the move
+    isAbsent(dict1, 22);
+    isAbsent(dict1, 4);
+    isAbsent(dict1, 9);
+    isAbsent(dict1, 1);
+    isAbsent(dict1, 0);
+    isAbsent(dict1, 24);
+    isAbsent(dict1, 26);
+    isAbsent(dict1, 19);
+    isAbsent(dict1, 31);
+    isAbsent(dict1, 23);
+    isAbsent(dict1, 37);
+    isAbsent(dict1, 42);
+    isAbsent(dict1, -1);
+}
+
+// Test case for checking if the move assignment overwrites existing data
+TEST(MoveAssignmentTests, MoveAssignmentOverwrites) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2.insertNode(22, "Jane");
+    dict2.insertNode(2, "William");
+
+    dict1 = std::move(dict2); // Move assignment.
+
+    // Check if dict1 only contains elements from dict2
+    isAbsent(dict1, 4);
+    isAbsent(dict1, 9);
+    isAbsent(dict1, 1);
+    isAbsent(dict1, 0);
+    isAbsent(dict1, 24);
+    isAbsent(dict1, 26);
+    isAbsent(dict1, 19);
+    isAbsent(dict1, 31);
+    isAbsent(dict1, 23);
+    isAbsent(dict1, 37);
+    isAbsent(dict1, 42);
+    isAbsent(dict1, -1);
+
+    isPresent(dict1, 2, "William");
+}
+
+// Test case for checking that move assignment is not a shallow copy
+TEST(MoveAssignmentTests, MoveAssignmentIsNotShallowCopy) {
+    Dictionary dict1;
+    insertTestData(dict1);
+
+    Dictionary dict2;
+    dict2 = std::move(dict1); // Move assignment.
+
+    dict1.removeNode(19);
+    dict1.removeNode(23);
+    isPresent(dict2, 19, "Henry");
+    isPresent(dict2, 23, "Elizabeth");
+}
+
+// Test case for checking self-assignment with move assignment
+TEST(MoveAssignmentTests, MoveSelfAssignment) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict = std::move(dict); // Self-assignment with move assignment.
+
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+}

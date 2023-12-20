@@ -14,10 +14,39 @@ Dictionary::Dictionary(const Dictionary& other) {
     head_ = deepCopyWorker(other.head_);
 }
 
+// Copy assignment operator.
+Dictionary& Dictionary::operator=(const Dictionary& other) {
+    if (this == &other) {
+        // Check for self-assignment.
+        return *this;
+    }
+
+    // Delete the current tree to prevent memory leaks.
+    deepDeleteWorker(head_);
+
+    // Perform a deep copy of the other dictionary's tree.
+    head_ = deepCopyWorker(other.head_);
+
+    // Return a reference to this object.
+    return *this;
+}
+
 // Move constructor
-Dictionary::Dictionary(Dictionary&& other)
+Dictionary::Dictionary(Dictionary&& other) noexcept
     : head_(other.head_) { // Transfer the root node pointer
     other.head_ = nullptr; // Set the source object's root node pointer to nullptr
+}
+
+// Move assignment operator.
+Dictionary& Dictionary::operator=(Dictionary&& other) noexcept {
+    if (this != &other) {
+        // Check for self-assignment
+        deepDeleteWorker(head_); // Delete current tree to prevent memory leaks
+
+        head_ = other.head_; // Transfer the root node pointer from the source object
+        other.head_ = nullptr; // Set the source object's root node pointer to nullptr
+    }
+    return *this; // Return a reference to this object
 }
 
 // Check if a node is a leaf (null).
