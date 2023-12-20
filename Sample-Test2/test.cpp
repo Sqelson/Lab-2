@@ -383,3 +383,75 @@ TEST(RotationTests, RotateRight) {
     EXPECT_EQ(leftChild ? leftChild->data : -1, -1);
     EXPECT_EQ(rightChild ? rightChild->data : -1, 22);
 }
+
+// Test case for fully moving a dictionary.
+// This test checks if all elements are correctly moved to a new dictionary.
+TEST(MoveConstructorTests, MoveConstructorFullyMoves) {
+    Dictionary dict1;
+    insertTestData(dict1); // Insert test data into dict1.
+
+    Dictionary dict2(std::move(dict1)); // Move dict1 into dict2.
+
+    // Check if all elements are present in dict2.
+    isPresent(dict2, 22, "Mary");
+    isPresent(dict2, 4, "Stephen");
+    isPresent(dict2, 9, "Edward");
+    isPresent(dict2, 1, "William");
+    isPresent(dict2, 0, "Harold");
+    isPresent(dict2, 24, "James");
+    isPresent(dict2, 26, "Charles");
+    isPresent(dict2, 19, "Henry");
+    isPresent(dict2, 31, "Anne");
+    isPresent(dict2, 23, "Elizabeth");
+    isPresent(dict2, 37, "Victoria");
+    isPresent(dict2, 42, "Elizabeth");
+    isPresent(dict2, -1, "Edward");
+}
+
+// Test case for checking if the move constructor steals resources from the source.
+// This test verifies that the source dictionary is empty after the move.
+TEST(MoveConstructorTests, MoveConstructorSteals) {
+    Dictionary* dictPtr;
+    {
+        Dictionary dict1;
+        insertTestData(dict1); // Insert test data into dict1.
+
+        // Move dict1 into a new dictionary pointed by dictPtr.
+        dictPtr = new Dictionary(std::move(dict1));
+
+        // Check if dict1 is empty after the move.
+        isAbsent(dict1, 22);
+        isAbsent(dict1, 4);
+        isAbsent(dict1, 9);
+        isAbsent(dict1, 1);
+        isAbsent(dict1, 0);
+        isAbsent(dict1, 24);
+        isAbsent(dict1, 26);
+        isAbsent(dict1, 19);
+        isAbsent(dict1, 31);
+        isAbsent(dict1, 23);
+        isAbsent(dict1, 37);
+        isAbsent(dict1, 42);
+        isAbsent(dict1, -1);
+
+        // Note: dict1 gets deleted here (end of scope).
+    }
+
+    // Check if all elements are present in the dictionary pointed by dictPtr.
+    isPresent(*dictPtr, 22, "Mary");
+    isPresent(*dictPtr, 4, "Stephen");
+    isPresent(*dictPtr, 9, "Edward");
+    isPresent(*dictPtr, 1, "William");
+    isPresent(*dictPtr, 0, "Harold");
+    isPresent(*dictPtr, 24, "James");
+    isPresent(*dictPtr, 26, "Charles");
+    isPresent(*dictPtr, 19, "Henry");
+    isPresent(*dictPtr, 31, "Anne");
+    isPresent(*dictPtr, 23, "Elizabeth");
+    isPresent(*dictPtr, 37, "Victoria");
+    isPresent(*dictPtr, 42, "Elizabeth");
+    isPresent(*dictPtr, -1, "Edward");
+
+
+    delete dictPtr; // Clean up dynamically allocated memory.
+}

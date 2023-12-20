@@ -14,6 +14,12 @@ Dictionary::Dictionary(const Dictionary& other) {
     head_ = deepCopyWorker(other.head_);
 }
 
+// Move constructor
+Dictionary::Dictionary(Dictionary&& other)
+    : head_(other.head_) { // Transfer the root node pointer
+    other.head_ = nullptr; // Set the source object's root node pointer to nullptr
+}
+
 // Check if a node is a leaf (null).
 bool Dictionary::isLeaf(Node* theNode) {
     return (theNode == nullptr);

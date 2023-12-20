@@ -9,8 +9,13 @@ public:
     using ItemType = std::string;
 
     Dictionary(); // Default constructor.
+
+    // This set of declarations adheres to the rule of 5 (an extension of the rule of 3).
     ~Dictionary(); // Destructor.
     Dictionary(const Dictionary& other); // Copy constructor.
+    Dictionary(Dictionary&& other); // Move constructor
+	Dictionary& operator=(const Dictionary& other); // Copy assignment operator.
+    Dictionary& operator=(Dictionary&& other); // Move assignment operator.
 
     void displayEntries(); // Displays entries in the tree.
 
