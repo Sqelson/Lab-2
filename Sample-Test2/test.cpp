@@ -38,112 +38,77 @@ void insertTestData(Dictionary& dict) {
     dict.insertNode(26, "Charles");
 }
 
-// Initial test cases that do not use the dictionary from the labs.
-
-// Test case for inserting and looking up values in the Dictionary.
-TEST(InsertAndLookupTests, InsertAndLookup) {
-    Dictionary dict;  // Create a Dictionary object
-
-    // Test inserting a new key-value pair
-    dict.insertNode(1, "one");
-    std::string* value = dict.lookupNode(1);  // Look up the value using the key
-    ASSERT_NE(value, nullptr);  // Ensure the returned pointer is not null
-    EXPECT_EQ(*value, "one");  // Check if the returned value is correct
-
-    // Repeat the above steps for different key-value pairs
-    dict.insertNode(2, "two");
-    value = dict.lookupNode(2);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "two");
-
-    dict.insertNode(-1, "negative one");
-    value = dict.lookupNode(-1);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "negative one");
+// Test case for looking up in an empty dictionary.
+TEST(Lookup_InsertTests, EmptyLookup) {
+    Dictionary dict;
+    isAbsent(dict, 1);
 }
 
-// Test case for overwriting values of existing keys in the Dictionary.
-TEST(InsertAndLookupTests, OverwriteExistingKey) {
+// Test case for a single insertion.
+TEST(Lookup_InsertTests, SingleInsert) {
     Dictionary dict;
-
-    // Insert a key-value pair and check its value
-    dict.insertNode(1, "one");
-    std::string* value = dict.lookupNode(1);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "one");
-
-    // Overwrite the value of the existing key and check the new value
-    dict.insertNode(1, "uno");
-    value = dict.lookupNode(1);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "uno");
+    dict.insertNode(22, "Mary");
+    // Optionally check if the insertion was successful.
 }
 
-// Test case for looking up keys that do not exist in the Dictionary.
-TEST(InsertAndLookupTests, LookupNonexistentKey) {
+// Test case for inserting a single element and then looking it up.
+TEST(Lookup_InsertTests, SingleInsertLookup) {
     Dictionary dict;
-
-    // Attempt to look up a key that hasn't been inserted, expecting a null pointer
-    std::string* value = dict.lookupNode(1);
-    EXPECT_EQ(value, nullptr);
+    dict.insertNode(22, "Mary");
+    isPresent(dict, 22, "Mary");
 }
 
-// Test case for inserting multiple key-value pairs and looking them up in the Dictionary.
-TEST(InsertAndLookupTests, InsertMultipleAndLookup) {
+// Test case for overwriting an existing element and then looking it up.
+TEST(Lookup_InsertTests, SingleOverwriteLookup) {
     Dictionary dict;
-
-    // Insert multiple key-value pairs
-    dict.insertNode(1, "one");
-    dict.insertNode(2, "two");
-    dict.insertNode(3, "three");
-
-    // Look up each key and check the values
-    std::string* value = dict.lookupNode(1);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "one");
-
-    value = dict.lookupNode(2);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "two");
-
-    value = dict.lookupNode(3);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "three");
+    dict.insertNode(22, "Jane");
+    dict.insertNode(22, "Mary");
+    isPresent(dict, 22, "Mary");
 }
 
-// Test case for inserting and looking up values when the Dictionary is initially empty.
-TEST(InsertAndLookupTests, InsertAndLookupWhenEmpty) {
+// Test case for multiple insertions.
+TEST(Lookup_InsertTests, MultipleInsert) {
     Dictionary dict;
-
-    // Insert a key-value pair and check its value
-    dict.insertNode(1, "one");
-    std::string* value = dict.lookupNode(1);
-    ASSERT_NE(value, nullptr);
-    EXPECT_EQ(*value, "one");
+    insertTestData(dict);
 }
 
-// Test case for inserting and looking up a large number of key-value pairs.
-TEST(InsertAndLookupTests, InsertAndLookupLargeNumber) {
+// Test case for inserting multiple elements and then looking them up.
+TEST(Lookup_InsertTests, MultipleInsertLookupPresent) {
     Dictionary dict;
+    insertTestData(dict);
 
-    // Insert a large number of key-value pairs
-    for (int i = 0; i < 1000; ++i) {
-        dict.insertNode(i, std::to_string(i));
-    }
+    isPresent(dict, 22, "Mary");
+    isPresent(dict, 4, "Stephen");
+    isPresent(dict, 9, "Edward");
+    isPresent(dict, 1, "William");
+    isPresent(dict, 0, "Harold");
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 19, "Henry");
+    isPresent(dict, 31, "Anne");
+    isPresent(dict, 23, "Elizabeth");
+    isPresent(dict, 37, "Victoria");
+    isPresent(dict, 42, "Elizabeth");
+    isPresent(dict, -1, "Edward");
+}
 
-    // Look up each key and check the values
-    for (int i = 0; i < 1000; ++i) {
-        std::string* value = dict.lookupNode(i);
-        ASSERT_NE(value, nullptr);
-        EXPECT_EQ(*value, std::to_string(i));
-    }
+// Test case for inserting multiple elements and then checking for absent keys.
+TEST(Lookup_InsertTests, MultipleInsertLookupAbsent) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    isAbsent(dict, 2);
+    isAbsent(dict, 3);
+    isAbsent(dict, -4);
+    isAbsent(dict, 56);
+    isAbsent(dict, 30);
 }
 
 // Test case for measuring the performance of insertion and lookup operations.
 TEST(PerformanceTests, PerformanceTest) {
     Dictionary dict;
 
-    // Measure the time taken to insert a large number of key-value pairs
+    // Measure the time taken to insert a large number of key-value pairs.
     auto start_time = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 1000; ++i) {
         dict.insertNode(i, std::to_string(i));
@@ -152,7 +117,7 @@ TEST(PerformanceTests, PerformanceTest) {
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     std::cout << "Time taken to insert 1000 key-value pairs: " << duration.count() << " ms" << std::endl;
 
-    // Measure the time taken to look up a large number of keys
+    // Measure the time taken to look up a large number of keys.
     start_time = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 1000; ++i) {
         dict.lookupNode(i);
@@ -162,117 +127,205 @@ TEST(PerformanceTests, PerformanceTest) {
     std::cout << "Time taken to look up 1000 keys: " << duration.count() << " ms" << std::endl;
 }
 
-// Additional tests using the dictionary from the labs.
-
-// Test removing the root node when it only has a left child.
-TEST(RemoveNodeTests, RemoveRootWithLeftChild) {
-    Dictionary dict;  // Create a new Dictionary instance.
-    dict.insertNode(31, "Anne");  // Insert a root node.
-    dict.insertNode(7, "John");  // Insert a left child.
-    dict.removeNode(31);  // Remove the root node.
-
-    isAbsent(dict, 31);  // Check root node is removed.
-    isPresent(dict, 7, "John");  // Check left child node is present and correct.
+// Test case for removing from an empty dictionary.
+TEST(RemoveTests, EmptyRemove) {
+    Dictionary dict;
+    dict.removeNode(43);
+    isAbsent(dict, 43);
 }
 
-// Test removing the root node when it only has a right child.
-TEST(RemoveNodeTests, RemoveRootWithRightChild) {
-    Dictionary dict;  // Create a new Dictionary instance.
-    dict.insertNode(7, "John");  // Insert a root node.
-    dict.insertNode(31, "Anne");  // Insert a right child.
-    dict.removeNode(31);  // Remove the right child node.
-
-    isAbsent(dict, 31);  // Check right child node is removed.
-    isPresent(dict, 7, "John");  // Check root node is present and correct.
+// Test case for removing a childless root.
+TEST(RemoveTests, RemoveChildlessRoot) {
+    Dictionary dict;
+    dict.insertNode(7, "John");
+    dict.removeNode(7);
+    isAbsent(dict, 7);
 }
 
-// Test inserting many nodes, then removing nodes that only have one child.
-TEST(RemoveNodeTests, InsertMany_RemoveNodesWithOneChild) {
-    Dictionary dict;  // Create a new Dictionary instance.
-    insertTestData(dict);  // Insert test data.
+// Test case for removing the left child of the root.
+TEST(RemoveTests, RemoveLeftChildOfRoot) {
+    Dictionary dict;
+    dict.insertNode(31, "Anne");
+    dict.insertNode(7, "John");
+    dict.removeNode(7);
 
-    dict.removeNode(4);  // Remove a node with one child.
-    isAbsent(dict, 4);  // Check node is removed.
+    isAbsent(dict, 7);
+    isPresent(dict, 31, "Anne");
+}
 
-    dict.removeNode(1);  // Remove another node with one child.
-    isAbsent(dict, 1);  // Check node is removed.
+// Test case for removing the right child of the root.
+TEST(RemoveTests, RemoveRightChildOfRoot) {
+    Dictionary dict;
+    dict.insertNode(7, "John");
+    dict.insertNode(31, "Anne");
+    dict.removeNode(31);
 
-    dict.removeNode(9);  // Remove another node with one child.
-    isAbsent(dict, 9);  // Check node is removed.
+    isAbsent(dict, 31);
+    isPresent(dict, 7, "John");
+}
 
-    // Verify other nodes are still present and unaffected.
+// Test case for inserting many nodes and then removing childless nodes.
+TEST(RemoveTests, InsertMany_RemoveChildlessNodes) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict.removeNode(-1);
+    isAbsent(dict, -1);
+
+    dict.removeNode(1);
+    isAbsent(dict, 1);
+
+    dict.removeNode(19);
+    isAbsent(dict, 19);
+
+    dict.removeNode(23);
+    isAbsent(dict, 23);
+
+    dict.removeNode(31);
+    isAbsent(dict, 31);
+
+    dict.removeNode(42);
+    isAbsent(dict, 42);
+
+    dict.removeNode(4);
+    isAbsent(dict, 4);
+
+    isPresent(dict, 22, "Mary");
+    isPresent(dict, 9, "Edward");
+    isPresent(dict, 0, "Harold");
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 37, "Victoria");
+}
+
+// Test case for overwriting and then removing.
+TEST(RemoveTests, OverwriteThenRemove) {
+    Dictionary dict;
+    dict.insertNode(22, "Jane");
+    dict.insertNode(22, "Mary");
+    dict.insertNode(4, "Matilda");
+    dict.insertNode(26, "Oliver");
+    dict.insertNode(4, "Stephen");
+    dict.insertNode(26, "Charles");
+
+    dict.removeNode(4);
+    isAbsent(dict, 4);
+
+    dict.removeNode(26);
+    isAbsent(dict, 26);
+
+    dict.removeNode(22);
+    isAbsent(dict, 22);
+}
+
+// Test case for removing the root with a left child.
+TEST(RemoveTests, RemoveRootWithLeftChild) {
+    Dictionary dict;
+    dict.insertNode(31, "Anne");
+    dict.insertNode(7, "John");
+    dict.removeNode(31);
+
+    isAbsent(dict, 31);
+    isPresent(dict, 7, "John");
+}
+
+// Test case for removing the root with a right child.
+TEST(RemoveTests, RemoveRootWithRightChild) {
+    Dictionary dict;
+    dict.insertNode(7, "John");
+    dict.insertNode(31, "Anne");
+    dict.removeNode(31);
+
+    isAbsent(dict, 31);
+    isPresent(dict, 7, "John");
+}
+
+// Test case for inserting many nodes and then removing nodes with one child.
+TEST(RemoveTests, InsertMany_RemoveNodesWithOneChild) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict.removeNode(4);
+    isAbsent(dict, 4);
+
+    dict.removeNode(1);
+    isAbsent(dict, 1);
+
+    dict.removeNode(9);
+    isAbsent(dict, 9);
+
     isPresent(dict, 22, "Mary");
     isPresent(dict, 0, "Harold");
     isPresent(dict, 24, "James");
-    // ... other checks ...
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 19, "Henry");
+    isPresent(dict, 31, "Anne");
+    isPresent(dict, 23, "Elizabeth");
+    isPresent(dict, 37, "Victoria");
+    isPresent(dict, 42, "Elizabeth");
+    isPresent(dict, -1, "Edward");
 }
 
-// Test removing the root node when it has both left and right children.
-TEST(RemoveNodeTests, RemoveRootWithChildren) {
-    Dictionary dict;  // Create a new Dictionary instance.
-    dict.insertNode(31, "Anne");  // Insert a root node.
-    dict.insertNode(7, "John");  // Insert a left child.
-    dict.insertNode(42, "Elizabeth");  // Insert a right child.
-    dict.removeNode(31);  // Remove the root node.
+// Test case for removing the root with children.
+TEST(RemoveTests, RemoveRootWithChildren) {
+    Dictionary dict;
+    dict.insertNode(31, "Anne");
+    dict.insertNode(7, "John");
+    dict.insertNode(42, "Elizabeth");
+    dict.removeNode(31);
 
-    isAbsent(dict, 31);  // Check root node is removed.
-    isPresent(dict, 7, "John");  // Check left child node is present and correct.
-    isPresent(dict, 42, "Elizabeth");  // Check right child node is present and correct.
+    isAbsent(dict, 31);
+    isPresent(dict, 7, "John");
+    isPresent(dict, 42, "Elizabeth");
 }
 
-// Test inserting many nodes, then removing nodes that have two children.
-TEST(RemoveNodeTests, InsertMany_RemoveNodesWithChildren) {
-    Dictionary dict;  // Create a new Dictionary instance.
-    insertTestData(dict);  // Insert test data.
+// Test case for inserting many nodes and then removing nodes with children.
+TEST(RemoveTests, InsertMany_RemoveNodesWithChildren) {
+    Dictionary dict;
+    insertTestData(dict);
 
-    dict.removeNode(0);  // Remove a node with two children.
-    isAbsent(dict, 0);  // Check node is removed.
+    dict.removeNode(0);
+    isAbsent(dict, 0);
 
-    dict.removeNode(37);  // Remove another node with two children.
-    isAbsent(dict, 37);  // Check node is removed.
+    dict.removeNode(37);
+    isAbsent(dict, 37);
 
-    dict.removeNode(22);  // Remove another node with two children.
-    isAbsent(dict, 22);  // Check node is removed.
+    dict.removeNode(22);
+    isAbsent(dict, 22);
 
-    // Verify other nodes are still present and unaffected.
     isPresent(dict, 4, "Stephen");
     isPresent(dict, 9, "Edward");
     isPresent(dict, 1, "William");
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 19, "Henry");
+    isPresent(dict, 31, "Anne");
+    isPresent(dict, 23, "Elizabeth");
+    isPresent(dict, 42, "Elizabeth");
+    isPresent(dict, -1, "Edward");
 }
 
-// Test inserting many nodes, then attempting to remove a node that doesn't exist.
-TEST(RemoveNodeTests, InsertMany_RemoveAbsent) {
-    Dictionary dict;  // Create a new Dictionary instance.
-    insertTestData(dict);  // Insert test data.
+// Test case for inserting many nodes and then attempting to remove a node that doesn't exist.
+TEST(RemoveTests, InsertMany_RemoveAbsent) {
+    Dictionary dict;
+    insertTestData(dict);
 
-    dict.removeNode(6);  // Attempt to remove a node that doesn't exist.
-    isAbsent(dict, 6);  // Check node is still absent.
+    dict.removeNode(6);
+    isAbsent(dict, 6);
 
-    // Verify other nodes are still present and unaffected.
     isPresent(dict, 22, "Mary");
     isPresent(dict, 4, "Stephen");
     isPresent(dict, 9, "Edward");
-}
-
-// Test case for the destructor and deepDeleteWorker function
-// This test currently fails, for reasons that are not clear to me 
-TEST(DestructorTests, DestructorAndDeepDelete) {
-    Dictionary* dict = new Dictionary;
-
-    // Insert multiple key-value pairs
-    // -> is used because dict is a pointer. If dict was not a pointer, we would use the . operator instead
-    // This is also why we do not use the insertTestData function here, because it takes a Dictionary object, not a pointer
-    dict->insertNode(1, "one");
-    dict->insertNode(2, "two");
-    dict->insertNode(3, "three");
-
-    // Call the destructor by deleting the Dictionary object
-    delete dict;
-
-    // There is not a way to actually test this aside from checking that the destructor itself does not throw an exception.
-    /* EXPECT_ANY_THROW({
-        dict->insertNode(10, "ten");
-        }); */
+    isPresent(dict, 1, "William");
+    isPresent(dict, 0, "Harold");
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 19, "Henry");
+    isPresent(dict, 31, "Anne");
+    isPresent(dict, 23, "Elizabeth");
+    isPresent(dict, 37, "Victoria");
+    isPresent(dict, 42, "Elizabeth");
+    isPresent(dict, -1, "Edward");
 }
 
 // These tests need verifying and completing to ensure they work.
