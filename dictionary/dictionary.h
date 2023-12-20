@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <iostream>
 #include <vector>
 #include "Node.h"
@@ -26,6 +27,8 @@ public:
     void insertNode(KeyType key, ItemType value); // Inserts a node with the specified key and value.
 
     void removeNode(KeyType key); // Removes a node with the specified key.
+    void removeIf(std::function<bool(int)> predicate); // Higher-order function to remove entries by predicate
+
 
     std::vector<int> inOrderTraversal(); // Performs in-order traversal of the tree.
 
@@ -53,6 +56,7 @@ private:
 
     void removeNodeWorker(Node*& node, KeyType key); // Recursive worker for removeNode.
     Node* findMin(Node* node); // Finds the minimum node in a subtree.
+    void removeIfWorker(Node*& node, std::function<bool(int)> predicate); // Recursive helper function for removeIf
 
     void inOrderTraversalWorker(Node* node, std::vector<int>& keys); // Recursive worker for inOrderTraversal.
 

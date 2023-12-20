@@ -31,22 +31,22 @@ Dictionary& Dictionary::operator=(const Dictionary& other) {
     return *this;
 }
 
-// Move constructor
+// Move constructor.
 Dictionary::Dictionary(Dictionary&& other) noexcept
-    : head_(other.head_) { // Transfer the root node pointer
-    other.head_ = nullptr; // Set the source object's root node pointer to nullptr
+    : head_(other.head_) { // Transfer the root node pointer.
+    other.head_ = nullptr; // Set the source object's root node pointer to nullptr.
 }
 
 // Move assignment operator.
 Dictionary& Dictionary::operator=(Dictionary&& other) noexcept {
     if (this != &other) {
-        // Check for self-assignment
-        deepDeleteWorker(head_); // Delete current tree to prevent memory leaks
+        // Check for self-assignment.
+        deepDeleteWorker(head_); // Delete current tree to prevent memory leaks.
 
-        head_ = other.head_; // Transfer the root node pointer from the source object
-        other.head_ = nullptr; // Set the source object's root node pointer to nullptr
+        head_ = other.head_; // Transfer the root node pointer from the source object.
+        other.head_ = nullptr; // Set the source object's root node pointer to nullptr.
     }
-    return *this; // Return a reference to this object
+    return *this; // Return a reference to this object.
 }
 
 // Check if a node is a leaf (null).
@@ -194,6 +194,34 @@ Node* Dictionary::findMin(Node* node) {
         current = current->left;
     }
     return current;
+}
+
+// Function to remove entries based on a predicate
+void Dictionary::removeIf(std::function<bool(int)> predicate) {
+    removeIfWorker(head_, predicate);
+}
+
+// Recursive helper function for removeIf
+void Dictionary::removeIfWorker(Node*& node, std::function<bool(int)> predicate) {
+    if (node == nullptr) {
+        return;
+    }
+
+    // Check the predicate for the current node
+    if (predicate(node->data)) {
+        // Store the key to be removed
+        KeyType keyToRemove = node->data;
+        // Move to the next node before removing the current one
+        removeIfWorker(node->right, predicate);
+        removeIfWorker(node->left, predicate);
+        // Remove the current node
+        removeNode(keyToRemove);
+    }
+    else {
+        // Continue traversal
+        removeIfWorker(node->right, predicate);
+        removeIfWorker(node->left, predicate);
+    }
 }
 
 // In-order traversal.

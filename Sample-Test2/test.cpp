@@ -659,3 +659,73 @@ TEST(MoveAssignmentTests, MoveSelfAssignment) {
     isPresent(dict, 24, "James");
     isPresent(dict, 26, "Charles");
 }
+
+// Test case for removing no elements
+TEST(RemoveIfTests, RemoveNone) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict.removeIf([](int k) { return false; });
+
+    // Check if all elements are still present
+    isPresent(dict, 22, "Mary");
+    isPresent(dict, 4, "Stephen");
+    isPresent(dict, 9, "Edward");
+    isPresent(dict, 1, "William");
+    isPresent(dict, 0, "Harold");
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 19, "Henry");
+    isPresent(dict, 31, "Anne");
+    isPresent(dict, 23, "Elizabeth");
+    isPresent(dict, 37, "Victoria");
+    isPresent(dict, 42, "Elizabeth");
+    isPresent(dict, -1, "Edward");
+}
+
+// Test case for removing all elements
+TEST(RemoveIfTests, RemoveAll) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict.removeIf([](int k) { return true; });
+
+    // Check if all elements are removed
+    isAbsent(dict, 22);
+    isAbsent(dict, 4);
+    isAbsent(dict, 9);
+    isAbsent(dict, 1);
+    isAbsent(dict, 0);
+    isAbsent(dict, 24);
+    isAbsent(dict, 26);
+    isAbsent(dict, 19);
+    isAbsent(dict, 31);
+    isAbsent(dict, 23);
+    isAbsent(dict, 37);
+    isAbsent(dict, 42);
+    isAbsent(dict, -1);
+}
+
+// Test case for removing elements with odd keys
+TEST(RemoveIfTests, RemoveOddKeys) {
+    Dictionary dict;
+    insertTestData(dict);
+
+    dict.removeIf([](int k) { return k % 2 != 0; });
+
+    // Check if odd key elements are removed and even key elements are present
+    isPresent(dict, 22, "Mary");
+    isPresent(dict, 4, "Stephen");
+    isPresent(dict, 0, "Harold");
+    isPresent(dict, 24, "James");
+    isPresent(dict, 26, "Charles");
+    isPresent(dict, 42, "Elizabeth");
+
+    isAbsent(dict, 9);
+    isAbsent(dict, 1);
+    isAbsent(dict, 19);
+    isAbsent(dict, 31);
+    isAbsent(dict, 23);
+    isAbsent(dict, 37);
+    isAbsent(dict, -1);
+}
