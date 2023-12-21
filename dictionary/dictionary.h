@@ -13,10 +13,10 @@ public:
 
     // This set of declarations adheres to the rule of 5 (an extension of the rule of 3).
     ~Dictionary(); // Destructor.
-    Dictionary(const Dictionary& other); // Copy constructor.
-    Dictionary(Dictionary&& other) noexcept; // Move constructor
-	Dictionary& operator=(const Dictionary& other); // Copy assignment operator.
-    Dictionary& operator=(Dictionary&& other) noexcept; // Move assignment operator.
+    Dictionary(const Dictionary& source); // Copy constructor.
+    Dictionary(Dictionary&& source) noexcept; // Move constructor
+	Dictionary& operator=(const Dictionary& source); // Copy assignment operator.
+    Dictionary& operator=(Dictionary&& source) noexcept; // Move assignment operator.
 
     void displayEntries(); // Displays entries in the tree.
 
